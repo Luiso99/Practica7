@@ -1,0 +1,4 @@
+Método HTTP	URL	Descripción
+POST	https://jsonstorage.net/v1/json?apiKey=195755a7-0a9e-4b21-ba11-6fee7128505d	Crea un almacén nuevo para nuestra aplicación. Devuelve la URL que debemos utilizar como endpoint para guardar la información de nuestra aplicación. Por ejemplo la URL que vemos en el GET más abajo es lo que devuelve el método POST. Un ejemplo de esta URL con el API KEY arriba indicado sería: https://jsonstorage.net/v1/json?apiKey=195755a7-0a9e-4b21-ba11-6fee7128505d
+GET	https://api.jsonstorage.net/v1/json/650cd385-824a-4ff2-acd8-66c9d52f56ad/66d126e1-c4d5-49b8-9b19-f8fd10584074 (la creada con el método POST)	Lee la información guardada en el endpoint creado
+PUT	https://api.jsonstorage.net/v1/json/650cd385-824a-4ff2-acd8-66c9d52f56ad/66d126e1-c4d5-49b8-9b19-f8fd10584074?apiKey=195755a7-0a9e-4b21-ba11-6fee7128505d (la creada con el método POST)

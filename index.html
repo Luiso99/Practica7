@@ -46,7 +46,7 @@
 
         const postAPI = async (peliculas) => {
             try {
-                const res = await fetch("https://myjson.dit.upm.es/api/bins", {
+                const res = await fetch("https://jsonstorage.net/v1/json?apiKey=195755a7-0a9e-4b21-ba11-6fee7128505d", {
                   method: 'POST', 
                   headers:{
                       "Content-Type": "application/json",
@@ -61,11 +61,33 @@
         }
         const getAPI = async () => {
             // Completar: Llamar a la API para leer la información guardada en myjson a través de la API
+            try {
+                const res = await fetch("https://api.jsonstorage.net/v1/json/650cd385-824a-4ff2-acd8-66c9d52f56ad/66d126e1-c4d5-49b8-9b19-f8fd10584074");
+                const data = await res.json();
+                return data;
+            } catch (err) {
+                alert("No se ha podido leer el endpoint.")
+            }
+
+
 
           
         }
         const updateAPI = async (peliculas) => {
             // Completar: Actualizar la información a través de la API
+            try {
+                const res = await fetch("https://api.jsonstorage.net/v1/json/650cd385-824a-4ff2-acd8-66c9d52f56ad/66d126e1-c4d5-49b8-9b19-f8fd10584074?apiKey=195755a7-0a9e-4b21-ba11-6fee7128505d", {
+                  method: 'PUT', 
+                  headers:{
+                      "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(peliculas)
+                });
+                const {uri} = await res.json();
+                return uri;               
+            } catch (err) {
+                alert("No se ha podido actualizar el endpoint.")
+            }
         }
 
  
@@ -127,7 +149,27 @@
 
         const showView = (pelicula) => {
             // Completar: genera HTML con información de la película
-            // ...
+            return `<h2>Información de la película</h2>
+                <div class="field">
+                Título <br>
+                <input  type="text" id="titulo" placeholder="Título" 
+                        value="${pelicula.titulo}" disabled>
+                </div>
+                <div class="field">
+                Director <br>
+                <input  type="text" id="director" placeholder="Director" 
+                        value="${pelicula.director}" disabled>
+                </div>
+                <div class="field">
+                Miniatura <br>
+                <input  type="text" id="miniatura" placeholder="URL de la miniatura" 
+                        value="${pelicula.miniatura}" disabled>
+                </div>
+                <div class="actions">
+                    <button class="index">
+                        Volver
+                    </button>
+               `;
 
             return `
              <p>
@@ -141,6 +183,30 @@
 
         const newView = () => {
             // Completar: genera formulario para crear nuevo quiz
+            return `<h2>Nueva película</h2>
+                <div class="field">
+                Título <br>
+                <input  type="text" id="titulo" placeholder="Título" 
+                        value="">
+                </div>
+                <div class="field">
+                Director <br>
+                <input  type="text" id="director" placeholder="Director" 
+                        value="">
+                </div>
+                <div class="field">
+                Miniatura <br>
+                <input  type="text" id="miniatura" placeholder="URL de la miniatura" 
+                        value="">
+                </div>
+                <div class="actions">
+                    <button class="create">
+                        Crear
+                    </button>
+                    <button class="index">
+                        Volver
+                    </button>
+               `;
             // ...
 
             return `<h2>Crear Película</h2>
@@ -166,14 +232,23 @@
 
         const showContr = (i) => {
             // Completar: controlador que muestra la vista showView()
+            document.getElementById('main').innerHTML = showView(mis_peliculas[i]);
         }
 
         const newContr = () => {
             // Completar: controlador que muestra la vista newView()
+            document.getElementById('main').innerHTML = newView();
         }
 
         const createContr = async () => {
             // Completar: controlador que crea una película nueva en el modelo guardado en myjson
+            let titulo = document.getElementById('titulo').value;
+            let director = document.getElementById('director').value;
+            let miniatura = document.getElementById('miniatura').value;
+            let pelicula = {titulo: titulo, director: director, miniatura: miniatura};
+            mis_peliculas.push(pelicula);
+            localStorage.URL = await postAPI(mis_peliculas);
+            indexContr();
         }
 
         const editContr = (i) => {
@@ -190,11 +265,20 @@
 
         const deleteContr = async (i) => {
             // Completar:  controlador que actualiza el modelo borrando la película seleccionada
-            // Genera diálogo de confirmación: botón Aceptar devuelve true, Cancel false
+            mis_peliculas.splice(i, 1);
+            localStorage.URL = await postAPI(mis_peliculas);
+            indexContr();
+            // Genera diálogo de confirmación: botón Aceptar devuelve true, Cancel false.
+            if (confirm("¿Estás seguro de que quieres borrar esta película?")) {
+            // Completar:  controlador que actualiza el modelo borrando la película seleccionad
+            }
+            indexContr();
         }
 
         const resetContr = async () => {
             // Completar:  controlador que reinicia el modelo guardado en myjson con las películas originales
+            localStorage.URL = await postAPI(mis_peliculas_iniciales);
+            indexContr();
         }
 
         // ROUTER de eventos
