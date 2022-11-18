@@ -132,16 +132,6 @@ let mis_peliculas_iniciales = [
                  Volver
              </button>
         `;
-
-
-     return `
-      <p>
-      
-      
-      </p>
-      <div class="actions">
-         <button class="index">Volver</button>
-      </div>`;
     }
 
  const newView = () => {
@@ -170,15 +160,7 @@ let mis_peliculas_iniciales = [
                  Volver
              </button>
         `;
-     // ...
-
-     return `<h2>Crear Película</h2>
-         <div class="actions">
-             <button class="index">Volver</button>
-         </div>`;  
-         
  }
-
 
  // CONTROLADORES 
 
