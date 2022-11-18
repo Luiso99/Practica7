@@ -132,7 +132,7 @@ let mis_peliculas_iniciales = [
                  Volver
              </button>
         `;
-     // ...
+
 
      return `
       <p>
@@ -142,7 +142,7 @@ let mis_peliculas_iniciales = [
       <div class="actions">
          <button class="index">Volver</button>
       </div>`;
- }
+    }
 
  const newView = () => {
      // Completar: genera formulario para crear nuevo quiz
@@ -175,7 +175,8 @@ let mis_peliculas_iniciales = [
      return `<h2>Crear Película</h2>
          <div class="actions">
              <button class="index">Volver</button>
-         </div>`;
+         </div>`;  
+         
  }
 
 
