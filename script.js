@@ -9,20 +9,21 @@ let mis_peliculas_iniciales = [
  let mis_peliculas = [];
 
  const postAPI = async (peliculas) => {
-     try {
-         const res = await fetch("https://jsonstorage.net/v1/json?apiKey=195755a7-0a9e-4b21-ba11-6fee7128505d", {
-           method: 'POST', 
-           headers:{
-               "Content-Type": "application/json",
-           },
-           body: JSON.stringify(peliculas)
-         });
-         const {uri} = await res.json();
-         return uri;               
-     } catch (err) {
-         alert("No se ha podido crear el endpoint.")
-     }
- }
+    try {
+        const res = await fetch("https://api.jsonstorage.net/v1/json/650cd385-824a-4ff2-acd8-66c9d52f56ad?apiKey=195755a7-0a9e-4b21-ba11-6fee7128505d", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(peliculas)
+        });
+        const data = await res.json();
+        console.log(data);
+    } catch (err) {
+        console.error(err);
+    }
+};
+    
  const getAPI = async () => {
      // Completar: Llamar a la API para leer la información guardada en myjson a través de la API
      try {
@@ -81,7 +82,6 @@ let mis_peliculas_iniciales = [
 
      return view;
  }
-
  const editView = (i, pelicula) => {
      return `<h2>Editar Película </h2>
          <div class="field">
