@@ -1,5 +1,8 @@
 // MODELO DE DATOS
 
+//Trabajar con Queris de AJAX: https://api.jquery.com/jQuery.getJSON/
+
+
 let mis_peliculas_iniciales = [
     {titulo: "Superlópez",   director: "Javier Ruiz Caldera", "miniatura": "files/superlopez.png"},
     {titulo: "Jurassic Park", director: "Steven Spielberg", "miniatura": "files/jurassicpark.png"},
@@ -8,34 +11,70 @@ let mis_peliculas_iniciales = [
 
  let mis_peliculas = [];
 
+ $.ajax({
+    type: "POST",
+    url: `https://jsonstorage.net/v1/json?apiKey=195755a7-0a9e-4b21-ba11-6fee7128505d`,
+    data: mis_peliculas_iniciales,
+    dataType: 'json',
+    success: function(json) {
+        $('<h1/>').text(json.title).appendTo('body');
+        $('<div class="content"/>')
+            .html(json.html).appendTo('body');
+    },
+    error: function(xhr, status) {
+        alert('Disculpe, existió un problema');
+    },
+    complete: function(xhr, status) {
+        alert('Petición realizada');
+    }   
+  });
+
  const postAPI = async (peliculas) => {
-    try {
-        const res = await fetch("https://api.jsonstorage.net/v1/json/650cd385-824a-4ff2-acd8-66c9d52f56ad?apiKey=195755a7-0a9e-4b21-ba11-6fee7128505d", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(peliculas)
-        });
-        const data = await res.json();
-        console.log(data);
-    } catch (err) {
-        console.error(err);
+    const response = await fetch('https://jsonstorage.net/v1/json?apiKey=195755a7-0a9e-4b21-ba11-6fee7128505d', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json', 
+                //Aquí debemos poner la clave secreta que nos proporciona el servicio
+                
+        },
+        body: JSON.stringify(peliculas) // body data type must match "Content-Type" header
+    });
+    return await response.json().uri;
+        };
+    
+    $.ajax({
+    type: "GET",
+    url: `https://api.jsonstorage.net/v1/json/650cd385-824a-4ff2-acd8-66c9d52f56ad/66d126e1-c4d5-49b8-9b19-f8fd10584074`,
+    data: mis_peliculas_iniciales,
+    dataType: 'json',
+    success: function(json) {
+        $('<h1/>').text(json.title).appendTo('body');
+        $('<div class="content"/>')
+            .html(json.html).appendTo('body');
+    },
+    error: function(xhr, status) {
+        alert('Disculpe, existió un problema');
+    },
+    complete: function(xhr, status) {
+        alert('Petición realizada');
     }
-};
+    });
     
  const getAPI = async () => {
      // Completar: Llamar a la API para leer la información guardada en myjson a través de la API
-     try {
-         const res = await fetch("https://api.jsonstorage.net/v1/json/650cd385-824a-4ff2-acd8-66c9d52f56ad/66d126e1-c4d5-49b8-9b19-f8fd10584074");
-         const data = await res.json();
-         return data;
-     } catch (err) {
-         alert("No se ha podido leer el endpoint.")
-     }
+        // https://api.jsonstorage.net/v1/json/{id}
+        // https://api.jsonstorage.net/v1/json/650cd385-824a-4ff2-acd8-66c9d52f56ad
+        // https://api.jsonstorage.net/v1/json/650cd385-824a-4ff2-acd8-66c9d52f56ad/66d126e1-c4d5-49b8-9b19-f8fd10584074
+        const response = await fetch('https://api.jsonstorage.net/v1/json/650cd385-824a-4ff2-acd8-66c9d52f56ad/66d126e1-c4d5-49b8-9b19-f8fd10584074', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        return await response.json();
+    };
+     
 
-   
- }
  const updateAPI = async (peliculas) => {
      // Completar: Actualizar la información a través de la API
      try {
@@ -165,15 +204,25 @@ let mis_peliculas_iniciales = [
  // CONTROLADORES 
 
  const initContr = async () => {
-     if (!localStorage.URL || localStorage.URL === "undefined") {
-         localStorage.URL = await postAPI(mis_peliculas_iniciales);
-     }
-     indexContr();
+        // Completar: Inicializar la aplicación
+        const peliculas = await getAPI();
+        const view = indexView(peliculas);
+        $('body').html(view);
+        
+        /*if (!localStorage.URL || localStorage.URL === "undefined") {
+            localStorage.URL = await postAPI(mis_peliculas_iniciales);
+        }
+        indexContr();*/
  }
 
  const indexContr = async () => {
-     mis_peliculas = await getAPI() || [];
-     document.getElementById('main').innerHTML = await indexView(mis_peliculas);
+        // Completar: Cargar vista principal
+        const peliculas = await getAPI();
+        const view = indexView(peliculas);
+        $('body').html(view);
+
+        /*mis_peliculas = await getAPI() || [];
+     document.getElementById('main').innerHTML = await indexView(mis_peliculas);*/
  }
 
  const showContr = (i) => {
