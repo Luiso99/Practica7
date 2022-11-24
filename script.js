@@ -14,6 +14,7 @@ let mis_peliculas_iniciales = [
  $.ajax({
     type: "POST",
     url: `https://jsonstorage.net/v1/json?apiKey=195755a7-0a9e-4b21-ba11-6fee7128505d`,
+    apiKey: '195755a7-0a9e-4b21-ba11-6fee7128505d',
     data: mis_peliculas_iniciales,
     dataType: 'json',
     success: function(json) {
@@ -33,19 +34,21 @@ let mis_peliculas_iniciales = [
     const response = await fetch('https://jsonstorage.net/v1/json?apiKey=195755a7-0a9e-4b21-ba11-6fee7128505d', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json', 
+            'Content-Type': 'application/json',
+                //Header que me indique el API Key, Inspeccionar url > Headers > Request Headers > APIKEY 
                 //Aquí debemos poner la clave secreta que nos proporciona el servicio
                 
         },
-        body: JSON.stringify(peliculas) // body data type must match "Content-Type" header
+        body: JSON.stringify({apiKey: undefined}) // body data type must match "Content-Type" header
     });
-    return await response.json().uri;
+    return response.json();
         };
     
     $.ajax({
     type: "GET",
     url: `https://api.jsonstorage.net/v1/json/650cd385-824a-4ff2-acd8-66c9d52f56ad/66d126e1-c4d5-49b8-9b19-f8fd10584074`,
     data: mis_peliculas_iniciales,
+    apiKey: '195755a7-0a9e-4b21-ba11-6fee7128505d',
     dataType: 'json',
     success: function(json) {
         $('<h1/>').text(json.title).appendTo('body');
@@ -69,21 +72,40 @@ let mis_peliculas_iniciales = [
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-            }
+            },
+            body: JSON.stringify({apiKey}) 
         });
-        return await response.json();
+        return response.json();
     };
      
 
+    $.ajax({
+        type: "PUT",
+        url: `https://api.jsonstorage.net/v1/json/650cd385-824a-4ff2-acd8-66c9d52f56ad/66d126e1-c4d5-49b8-9b19-f8fd10584074?apiKey=195755a7-0a9e-4b21-ba11-6fee7128505d`,
+        data: mis_peliculas_iniciales,
+        apiKey: '195755a7-0a9e-4b21-ba11-6fee7128505d',
+        dataType: 'json',
+        success: function(json) {
+            $('<h1/>').text(json.title).appendTo('body');
+            $('<div class="content"/>')
+                .html(json.html).appendTo('body');
+        },
+        error: function(xhr, status) {
+            alert('Disculpe, existió un problema');
+        },
+        complete: function(xhr, status) {
+            alert('Petición realizada');
+        }
+        });
  const updateAPI = async (peliculas) => {
      // Completar: Actualizar la información a través de la API
      try {
-         const res = await fetch("https://api.jsonstorage.net/v1/json/650cd385-824a-4ff2-acd8-66c9d52f56ad/66d126e1-c4d5-49b8-9b19-f8fd10584074?apiKey=195755a7-0a9e-4b21-ba11-6fee7128505d", {
+         const res = await fetch(`https://api.jsonstorage.net/v1/json/650cd385-824a-4ff2-acd8-66c9d52f56ad/66d126e1-c4d5-49b8-9b19-f8fd10584074?apiKey=195755a7-0a9e-4b21-ba11-6fee7128505d`, {
            method: 'PUT', 
            headers:{
                "Content-Type": "application/json",
            },
-           body: JSON.stringify(peliculas)
+           body: JSON.stringify(apiKey)
          });
          const {uri} = await res.json();
          return uri;               
@@ -205,24 +227,23 @@ let mis_peliculas_iniciales = [
 
  const initContr = async () => {
         // Completar: Inicializar la aplicación
-        const peliculas = await getAPI();
+        /*const peliculas = await getAPI();
         const view = indexView(peliculas);
-        $('body').html(view);
-        
-        /*if (!localStorage.URL || localStorage.URL === "undefined") {
+        $('body').html(view);*/
+        if (!localStorage.URL || localStorage.URL === "undefined") {
             localStorage.URL = await postAPI(mis_peliculas_iniciales);
         }
-        indexContr();*/
+        indexContr();
  }
 
  const indexContr = async () => {
         // Completar: Cargar vista principal
-        const peliculas = await getAPI();
+        /*const peliculas = await getAPI();
         const view = indexView(peliculas);
-        $('body').html(view);
+        $('body').html(view);*/
 
-        /*mis_peliculas = await getAPI() || [];
-     document.getElementById('main').innerHTML = await indexView(mis_peliculas);*/
+        mis_peliculas = await getAPI() || [];
+     document.getElementById('main').innerHTML = await indexView(mis_peliculas_iniciales);
  }
 
  const showContr = (i) => {
