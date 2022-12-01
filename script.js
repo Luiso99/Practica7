@@ -14,9 +14,10 @@ let mis_peliculas_iniciales = [
  $.ajax({
     type: "POST",
     url: `https://jsonstorage.net/v1/json?apiKey=195755a7-0a9e-4b21-ba11-6fee7128505d`,
+    data: JSON.stringify(mis_peliculas),
     apiKey: '195755a7-0a9e-4b21-ba11-6fee7128505d',
-    data: mis_peliculas_iniciales,
-    dataType: 'json',
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
     success: function(json) {
         $('<h1/>').text(json.title).appendTo('body');
         $('<div class="content"/>')
@@ -39,7 +40,7 @@ let mis_peliculas_iniciales = [
                 //Aquí debemos poner la clave secreta que nos proporciona el servicio
                 
         },
-        body: JSON.stringify({apiKey: undefined}) // body data type must match "Content-Type" header
+        body: JSON.stringify({apiKey: '195755a7-0a9e-4b21-ba11-6fee7128505d'}) // body data type must match "Content-Type" header
     });
     return response.json();
         };
@@ -47,9 +48,10 @@ let mis_peliculas_iniciales = [
     $.ajax({
     type: "GET",
     url: `https://api.jsonstorage.net/v1/json/650cd385-824a-4ff2-acd8-66c9d52f56ad/66d126e1-c4d5-49b8-9b19-f8fd10584074`,
-    data: mis_peliculas_iniciales,
+    data: JSON.stringify(mis_peliculas),
     apiKey: '195755a7-0a9e-4b21-ba11-6fee7128505d',
-    dataType: 'json',
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
     success: function(json) {
         $('<h1/>').text(json.title).appendTo('body');
         $('<div class="content"/>')
@@ -73,7 +75,7 @@ let mis_peliculas_iniciales = [
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({apiKey}) 
+            body: JSON.stringify({apiKey: '195755a7-0a9e-4b21-ba11-6fee7128505d'}) 
         });
         return response.json();
     };
@@ -83,7 +85,6 @@ let mis_peliculas_iniciales = [
         type: "PUT",
         url: `https://api.jsonstorage.net/v1/json/650cd385-824a-4ff2-acd8-66c9d52f56ad/66d126e1-c4d5-49b8-9b19-f8fd10584074?apiKey=195755a7-0a9e-4b21-ba11-6fee7128505d`,
         data: mis_peliculas_iniciales,
-        apiKey: '195755a7-0a9e-4b21-ba11-6fee7128505d',
         dataType: 'json',
         success: function(json) {
             $('<h1/>').text(json.title).appendTo('body');
@@ -98,21 +99,32 @@ let mis_peliculas_iniciales = [
         }
         });
  const updateAPI = async (peliculas) => {
-     // Completar: Actualizar la información a través de la API
-     try {
-         const res = await fetch(`https://api.jsonstorage.net/v1/json/650cd385-824a-4ff2-acd8-66c9d52f56ad/66d126e1-c4d5-49b8-9b19-f8fd10584074?apiKey=195755a7-0a9e-4b21-ba11-6fee7128505d`, {
-           method: 'PUT', 
-           headers:{
-               "Content-Type": "application/json",
-           },
-           body: JSON.stringify(apiKey)
-         });
-         const {uri} = await res.json();
-         return uri;               
-     } catch (err) {
-         alert("No se ha podido actualizar el endpoint.")
-     }
- }
+        // Completar: Llamar a la API para actualizar la información guardada en myjson a través de la API
+        // https://api.jsonstorage.net/v1/json/{id}
+        const response = await fetch('https://api.jsonstorage.net/v1/json/650cd385-824a-4ff2-acd8-66c9d52f56ad/66d126e1-c4d5-49b8-9b19-f8fd10584074', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({apiKey: '195755a7-0a9e-4b21-ba11-6fee7128505d'})
+        });
+        return response.json();
+    };
+                
+    //  try {
+    //      const res = await fetch(`https://api.jsonstorage.net/v1/json/650cd385-824a-4ff2-acd8-66c9d52f56ad/66d126e1-c4d5-49b8-9b19-f8fd10584074?apiKey=195755a7-0a9e-4b21-ba11-6fee7128505d`, {
+    //        method: 'PUT', 
+    //        headers:{
+    //            "Content-Type": "application/json",
+    //        },
+    //        body: JSON.stringify({apiKey: '195755a7-0a9e-4b21-ba11-6fee7128505d'})
+    //      });
+    //      const {uri} = await res.json();
+    //      return uri;               
+    //  } catch (err) {
+    //      alert("No se ha podido actualizar el endpoint.")
+    //  }
+
 
 
  // VISTAS
@@ -227,23 +239,23 @@ let mis_peliculas_iniciales = [
 
  const initContr = async () => {
         // Completar: Inicializar la aplicación
-        /*const peliculas = await getAPI();
+        const peliculas = await getAPI();
         const view = indexView(peliculas);
-        $('body').html(view);*/
-        if (!localStorage.URL || localStorage.URL === "undefined") {
+        $('body').html(view);
+        /*if (!localStorage.URL || localStorage.URL === "undefined") {
             localStorage.URL = await postAPI(mis_peliculas_iniciales);
         }
-        indexContr();
+        indexContr();*/
  }
 
  const indexContr = async () => {
         // Completar: Cargar vista principal
-        /*const peliculas = await getAPI();
+        const peliculas = await getAPI();
         const view = indexView(peliculas);
-        $('body').html(view);*/
+        $('body').html(view);
 
-        mis_peliculas = await getAPI() || [];
-     document.getElementById('main').innerHTML = await indexView(mis_peliculas_iniciales);
+        /*mis_peliculas = await getAPI() || [];
+     document.getElementById('main').innerHTML = await indexView(mis_peliculas_iniciales);*/
  }
 
  const showContr = (i) => {
@@ -266,12 +278,21 @@ let mis_peliculas_iniciales = [
  }
 
  const updateContr = async (i) => {
-     mis_peliculas[i].titulo   = document.getElementById('titulo').value;
-     mis_peliculas[i].director = document.getElementById('director').value;
-     mis_peliculas[i].miniatura = document.getElementById('miniatura').value;
-     await updateAPI(mis_peliculas);
-     indexContr();
- }
+        // Completar: controlador que actualiza una película en el modelo guardado en myjson
+        const peliculas = await getAPI();
+        peliculas[i].titulo = document.getElementById('titulo').value;
+        peliculas[i].director = document.getElementById('director').value;
+        peliculas[i].miniatura = document.getElementById('miniatura').value;
+        await putAPI(peliculas);
+        indexContr();
+    }
+
+    //  mis_peliculas[i].titulo   = document.getElementById('titulo').value;
+    //  mis_peliculas[i].director = document.getElementById('director').value;
+    //  mis_peliculas[i].miniatura = document.getElementById('miniatura').value;
+    //  await updateAPI(mis_peliculas);
+    //  indexContr();
+    //}
 
  const deleteContr = async (i) => {
      // Completar:  controlador que actualiza el modelo borrando la película seleccionada
