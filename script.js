@@ -110,21 +110,6 @@ let mis_peliculas_iniciales = [
         });
         return response.json();
     };
-                
-    //  try {
-    //      const res = await fetch(`https://api.jsonstorage.net/v1/json/650cd385-824a-4ff2-acd8-66c9d52f56ad/66d126e1-c4d5-49b8-9b19-f8fd10584074?apiKey=195755a7-0a9e-4b21-ba11-6fee7128505d`, {
-    //        method: 'PUT', 
-    //        headers:{
-    //            "Content-Type": "application/json",
-    //        },
-    //        body: JSON.stringify({apiKey: '195755a7-0a9e-4b21-ba11-6fee7128505d'})
-    //      });
-    //      const {uri} = await res.json();
-    //      return uri;               
-    //  } catch (err) {
-    //      alert("No se ha podido actualizar el endpoint.")
-    //  }
-
 
 
  // VISTAS
